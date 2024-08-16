@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 
+PALETTE = ['#000000', '#AD150B', '#DA7F15', '#8CAD0B', '#2575D2', '#6448D5']
+
 
 def plot(data: pd.DataFrame, suptitle: str, width: float, height: float, offset: float) -> None:
     fig, ax = plt.subplots()
@@ -29,9 +31,10 @@ def plot(data: pd.DataFrame, suptitle: str, width: float, height: float, offset:
 
         axs.append(ax)
 
-    for ax, column in zip(axs, data.columns):
-        ax.plot(data.index, data[column])
-        ax.set_ylabel(column)
+    for i, (ax, column) in enumerate(zip(axs, data.columns)):
+        ax.plot(data.index, data[column], color=PALETTE[i])
+        ax.set_ylabel(column, color=PALETTE[i])
+        ax.tick_params(axis='y', colors=PALETTE[i])
 
     return fig
 
