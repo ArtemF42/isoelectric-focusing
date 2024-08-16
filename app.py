@@ -1,10 +1,18 @@
+import os
 import io
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
 import streamlit as st
 
 PALETTE = ['#000000', '#AD150B', '#DA7F15', '#8CAD0B', '#2575D2', '#6448D5']
+
+
+def add_custom_fonts() -> None:
+    for filename in os.listdir('./fonts'):
+        font_manager.fontManager.addfont(f'./fonts/{filename}')
 
 
 def plot(data: pd.DataFrame, suptitle: str, width: float, height: float, offset: float) -> None:
@@ -39,11 +47,15 @@ def plot(data: pd.DataFrame, suptitle: str, width: float, height: float, offset:
     return fig
 
 
+if os.path.exists('./fonts'):
+    add_custom_fonts()
+
 with st.sidebar:
     suptitle = st.text_input('Title')
     width = st.number_input('Figure width', min_value=1.0, value=8.0, step=0.5)
     height = st.number_input('Figure height', min_value=1.0, value=4.0, step=0.5)
     offset = st.slider('Offset', min_value=0.1, max_value=0.2, value=0.15)
+    plt.rcParams['font.family'] = st.selectbox('Font', font_manager.get_font_names())
 
 if file := st.file_uploader('Upload data', type=['xls', 'xlsx']):
     data = pd.read_excel(file, index_col=0)
