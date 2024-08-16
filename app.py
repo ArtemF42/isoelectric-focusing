@@ -1,5 +1,6 @@
 import os
 import io
+from pathlib import Path
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -11,8 +12,8 @@ PALETTE = ['#000000', '#AD150B', '#DA7F15', '#8CAD0B', '#2575D2', '#6448D5']
 
 
 def add_custom_fonts() -> None:
-    for filename in os.listdir('./fonts'):
-        font_manager.fontManager.addfont(f'./fonts/{filename}')
+    for filepath in Path('./fonts/').rglob('*.ttf'):
+        font_manager.fontManager.addfont(filepath)
 
 
 def plot(data: pd.DataFrame, suptitle: str, width: float, height: float, offset: float) -> None:
