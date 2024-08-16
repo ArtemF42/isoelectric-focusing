@@ -46,9 +46,13 @@ def plot(data: pd.DataFrame, suptitle: str, width: float, height: float, offset:
 
     return fig
 
+if file := st.file_uploader('Upload font', type=['otf', 'ttf']):
+    font_data = file.getvalue()
 
-if os.path.exists('./fonts'):
-    add_custom_fonts()
+    with open(f'./fonts/{file.name}', 'wb') as file:
+        file.write(font_data)
+
+add_custom_fonts()
 
 with st.sidebar:
     suptitle = st.text_input('Title')
